@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vacation Rental Platform — Build Plan | FlumenX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A1F12;--bg2:#143322;--bg3:#1A4228;
+  --gold:#B8943A;--gold2:#C9A84C;--gold-lt:#E8C97A;
+  --teal:#5BA8A8;--sage:#7BA89A;--sage-lt:#A8C8BE;
+  --cream:#F4EFE6;--parch:#EDE6D9;--ink:#0D1B0F;
+  --muted:#6B7D6E;--border:#D8D0C4;--white:#FFFFFF;
+  --s1:#22c55e;--s2:#3b82f6;--s3:#a855f7;--sw:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;font-size:14px;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--bg);border-bottom:1px solid rgba(184,148,58,.3);display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;}
+nav::-webkit-scrollbar{display:none;}
+.nav-logo{padding:0 18px;height:52px;display:flex;align-items:center;gap:8px;border-right:1px solid rgba(184,148,58,.2);flex-shrink:0;}
+.nav-logo span{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold2);}
+.ndot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+button.nt{height:52px;padding:0 14px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11.5px;font-weight:500;color:rgba(255,255,255,.5);letter-spacing:.4px;white-space:nowrap;transition:all .2s;}
+button.nt:hover{color:var(--gold-lt);}
+button.nt.on{color:var(--gold2);border-bottom-color:var(--gold2);}
+
+/* HERO */
+.hero{background:linear-gradient(150deg,var(--bg) 0%,var(--bg2) 55%,var(--bg3) 100%);padding:72px 32px 56px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(184,148,58,.1) 0%,transparent 60%);pointer-events:none;}
+.hchip{display:inline-flex;align-items:center;gap:8px;background:rgba(184,148,58,.12);border:1px solid rgba(184,148,58,.35);border-radius:100px;padding:5px 14px 5px 8px;margin-bottom:20px;}
+.hchip span{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-lt);}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,64px);font-weight:700;color:var(--white);line-height:1.08;margin-bottom:12px;}
+.hero h1 em{font-style:normal;color:var(--gold2);}
+.hero-sub{color:rgba(255,255,255,.55);font-size:14px;max-width:540px;margin-bottom:40px;}
+.hkpis{display:flex;flex-wrap:wrap;gap:32px;}
+.kpi{display:flex;flex-direction:column;gap:4px;}
+.kpi-v{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold2);line-height:1;}
+.kpi-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);}
+
+/* PANELS */
+.panel{display:none;max-width:1140px;margin:0 auto;padding:40px 20px 64px;}
+.panel.on{display:block;}
+.sec-head{margin-bottom:32px;}
+.sec-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3vw,34px);font-weight:700;color:var(--bg2);margin-bottom:6px;}
+.sec-head p{font-size:13px;color:var(--muted);border-bottom:2px solid var(--border);padding-bottom:14px;}
+
+/* CARDS */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:26px;transition:box-shadow .2s;}
+.card:hover{box-shadow:0 8px 32px rgba(20,51,34,.08);}
+.pbar{height:3px;border-radius:2px;margin-bottom:18px;}
+.pbar1{background:linear-gradient(90deg,var(--s1),#16a34a);}
+.pbar2{background:linear-gradient(90deg,var(--s2),#1d4ed8);}
+.pbar3{background:linear-gradient(90deg,var(--s3),#7c3aed);}
+.badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.bg1{background:#dcfce7;color:#166534;}.bg2{background:#dbeafe;color:#1e40af;}
+.bg3{background:#f3e8ff;color:#6b21a8;}.bgw{background:#fef3c7;color:#92400e;}
+.bgt{background:#ccfbf1;color:#134e4a;}
+.card h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:10px;}
+.mrow{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;}
+.meta{font-size:12px;color:var(--muted);}
+.meta strong{color:var(--ink);font-weight:600;}
+ul.fl{list-style:none;}
+ul.fl li{padding:5px 0;font-size:13px;color:#374151;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid #f3f4f6;}
+ul.fl li:last-child{border-bottom:none;}
+ul.fl li::before{content:'✦';color:var(--teal);font-size:10px;flex-shrink:0;margin-top:3px;}
+
+/* BUDGET */
+.bhero{background:linear-gradient(135deg,var(--bg),var(--bg2));border-radius:20px;padding:36px 32px;margin-bottom:32px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;}
+@media(max-width:600px){.bhero{grid-template-columns:1fr;}}
+.bh-lbl{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:6px;}
+.bh-amt{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,7vw,72px);color:var(--gold-lt);line-height:1;margin-bottom:6px;}
+.bh-sub{font-size:12px;color:rgba(255,255,255,.45);}
+.bh-pill{display:inline-block;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;background:rgba(184,148,58,.15);border:1px solid rgba(184,148,58,.4);color:var(--gold-lt);white-space:nowrap;}
+
+/* COST GRID */
+.cgrid-cost{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px;margin-bottom:36px;}
+.ci{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:8px;}
+.ci-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.ci-name{font-size:13px;font-weight:600;color:var(--ink);}
+.ci-amt{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--bg2);white-space:nowrap;}
+.ci-desc{font-size:11.5px;color:var(--muted);line-height:1.5;}
+.ci-when{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;background:var(--parch);color:var(--muted);align-self:flex-start;}
+
+/* TABLE */
+.tw{overflow-x:auto;border-radius:12px;border:1px solid var(--border);margin-bottom:28px;}
+table{width:100%;border-collapse:collapse;background:var(--white);}
+thead{background:var(--bg);}
+thead th{padding:12px 16px;color:var(--gold2);font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;text-align:left;}
+tbody tr:nth-child(even){background:#fafaf9;}
+tbody td{padding:11px 16px;font-size:13px;color:var(--ink);border-bottom:1px solid #f0ede8;}
+tbody tr:last-child td{border-bottom:none;}
+tfoot td{padding:13px 16px;font-weight:700;font-size:14px;background:#f0f7f3;border-top:2px solid var(--border);}
+td.ta{font-weight:700;color:var(--bg2);}
+td.tt{font-weight:800;font-size:16px;color:#dc2626;}
+td.cy{color:var(--teal);font-weight:700;text-align:center;}
+td.cn{color:#d1d5db;font-weight:700;text-align:center;}
+
+/* TIMELINE */
+.tl{padding-left:30px;position:relative;}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--s1),var(--s2),var(--s3));}
+.tlb{position:relative;margin-bottom:20px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+.tlb::before{content:'';position:absolute;left:-26px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--teal);border:3px solid var(--cream);box-shadow:0 0 0 2px var(--teal);}
+.tlb.g::before{background:var(--gold2);box-shadow:0 0 0 2px var(--gold2);}
+.tlb.p::before{background:var(--s3);box-shadow:0 0 0 2px var(--s3);}
+.tlp{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:3px;}
+.tlb.g .tlp{color:var(--gold2);}
+.tlb.p .tlp{color:var(--s3);}
+.tlt{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;margin-bottom:4px;}
+.tld{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-bottom:6px;background:#f0f7f3;color:var(--bg2);}
+.tls{font-size:12.5px;color:var(--muted);}
+
+/* FEATURES */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+.fb{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.fb h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--bg2);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.ft{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.5px;margin:2px;}
+.t1{background:#dcfce7;color:#166534;}.t2{background:#dbeafe;color:#1e40af;}
+.t3{background:#f3e8ff;color:#6b21a8;}.to{background:#fef3c7;color:#92400e;}
+
+/* COMPARE */
+.cmpc{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:640px){.cmpc{grid-template-columns:1fr;}}
+.cc{background:var(--white);border-radius:16px;padding:28px;border:2px solid var(--border);}
+.cc.full{border-color:var(--teal);}.cc.lite{border-color:var(--gold2);}
+.cp{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;margin:10px 0 4px;}
+.full .cp{color:var(--teal);}.lite .cp{color:var(--gold2);}
+
+/* ALERT */
+.al{border-radius:10px;padding:16px 18px;display:flex;gap:12px;margin-bottom:22px;font-size:13px;}
+.al.info{background:#eff6ff;border-left:3px solid var(--s2);color:#1e3a5f;}
+.al.warn{background:#fffbeb;border-left:3px solid var(--sw);color:#78350f;}
+.al.ok{background:#f0fdf4;border-left:3px solid var(--s1);color:#14532d;}
+.al.brand{background:linear-gradient(90deg,rgba(20,51,34,.06),transparent);border-left:3px solid var(--teal);color:var(--ink);}
+.ai{flex-shrink:0;font-size:16px;}
+
+/* REVENUE */
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:18px;}
+.rc{background:var(--bg);border-radius:14px;padding:22px;color:var(--white);position:relative;overflow:hidden;}
+.rc::after{content:attr(data-ico);position:absolute;right:14px;top:10px;font-size:36px;opacity:.15;}
+.rl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:6px;}
+.rn{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;margin-bottom:8px;}
+.rd{font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;}
+
+/* TECH */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px;}
+.tc{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+.ti{font-size:26px;margin-bottom:6px;}.tn{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px;}.tu{font-size:11px;color:var(--muted);}
+
+/* INTEGRATIONS */
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;}
+.ic{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:border-color .2s;}
+.ic:hover{border-color:var(--teal);}
+.il{font-size:20px;margin-bottom:5px;}.in{font-size:12px;font-weight:700;margin-bottom:2px;}.it{font-size:10.5px;color:var(--muted);margin-bottom:5px;}
+.ib{display:inline-block;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600;}
+.ibm{background:#fce7f3;color:#9d174d;}.ibn{background:#e0f2fe;color:#075985;}
+
+/* MISC */
+hr.dv{border:none;border-top:2px solid var(--border);margin:32px 0;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:640px){.r2{grid-template-columns:1fr;}}
+.hsm{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--bg2);margin-bottom:14px;}
+.infran{font-size:12px;color:var(--muted);margin-top:8px;}
+.doc-footer{text-align:center;padding:32px 20px;background:var(--bg);}
+.doc-footer .brand{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--gold2);}
+.doc-footer .sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;}
+@media(max-width:768px){.hero{padding:50px 20px 40px;}.hkpis{gap:20px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><div class="ndot"></div><span>FlumenX</span></div>
+  <button class="nt on"  onclick="tab('overview',this)">Overview</button>
+  <button class="nt" onclick="tab('phases',this)">Phases</button>
+  <button class="nt" onclick="tab('features',this)">Features</button>
+  <button class="nt" onclick="tab('timeline',this)">Timeline</button>
+  <button class="nt" onclick="tab('budget',this)">Budget</button>
+  <button class="nt" onclick="tab('tech',this)">Tech Stack</button>
+  <button class="nt" onclick="tab('integrations',this)">Integrations</button>
+  <button class="nt" onclick="tab('compare',this)">Full vs Lite</button>
+  <button class="nt" onclick="tab('revenue',this)">Revenue</button>
+</nav>
+
+<div class="hero">
+  <div class="hchip"><div class="ndot"></div><span>Airbnb-Style Platform · Build Plan</span></div>
+  <h1>Vacation Rental<br><em>Marketplace Blueprint</em></h1>
+  <p class="hero-sub">Complete phased roadmap — web platform, Android &amp; iOS apps, full feature set, tech stack, budget breakdown, and revenue model.</p>
+  <div class="hkpis">
+    <div class="kpi"><div class="kpi-v">3</div><div class="kpi-l">Build Phases</div></div>
+    <div class="kpi"><div class="kpi-v">58 Wks</div><div class="kpi-l">Full Roadmap</div></div>
+    <div class="kpi"><div class="kpi-v">₹18–24L</div><div class="kpi-l">Dev Budget</div></div>
+    <div class="kpi"><div class="kpi-v">52+</div><div class="kpi-l">Features</div></div>
+    <div class="kpi"><div class="kpi-v">15+</div><div class="kpi-l">Integrations</div></div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div id="tab-overview" class="panel on">
+  <div class="sec-head"><h2>Project Overview</h2><p>Scope summary, platform structure, and market context</p></div>
+
+  <div class="al brand"><span class="ai">📋</span><div><strong>Requirement:</strong> A full Airbnb-style vacation rental marketplace — property listings, guest booking, host management, payments, reviews, and mobile apps (Android + iOS). Custom-built, three-phase delivery.</div></div>
+
+  <div class="al warn"><span class="ai">🔍</span><div><strong>Budget Reality Check — Compared to Our Own Projects:</strong> Our Psyzen teaser site alone was ₹85K. Beats n Bells full event platform was ₹70–82K. Those are single-purpose apps. This is a <em>two-sided marketplace</em> — a guest platform, a host platform, an admin system, payment infrastructure, real-time chat, calendar engine, review system, and two native mobile apps. It is 15–20× more complex. The ₹18–24L quoted here is <strong>well within Indian market rate</strong> for this scope and is not inflated. If anything, it's lean for the deliverable list.</div></div>
+
+  <div class="cgrid">
+    <div class="card"><div class="pbar pbar1"></div><span class="badge bg1">Phase 1 · MVP</span><h3>Launchable Web Platform</h3><div class="mrow"><span class="meta">⏱ <strong>14 Weeks</strong></span><span class="meta">💰 <strong>₹6.5–8.5L</strong></span><span class="meta">🌐 <strong>Web only</strong></span></div><ul class="fl"><li>User auth + social login</li><li>Property listing creation wizard</li><li>Search with filters + date picker</li><li>Booking flow + calendar availability</li><li>Razorpay (INR payments)</li><li>Host &amp; guest dashboards</li><li>Review &amp; rating system</li><li>Basic messaging inbox</li><li>Admin panel (core)</li><li>Email notifications + responsive design</li></ul></div>
+    <div class="card"><div class="pbar pbar2"></div><span class="badge bg2">Phase 2 · Full Web</span><h3>Complete Web Platform</h3><div class="mrow"><span class="meta">⏱ <strong>+20 Weeks</strong></span><span class="meta">💰 <strong>₹5–8L</strong></span><span class="meta">🌐 <strong>Web upgrade</strong></span></div><ul class="fl"><li>Google Maps — full map-view search</li><li>Real-time chat (WebSockets)</li><li>Dynamic pricing engine</li><li>KYC / Aadhaar verification</li><li>Experiences vertical</li><li>Coupon &amp; referral engine</li><li>Stripe (international payments)</li><li>Advanced admin + analytics</li><li>SMS &amp; WhatsApp alerts</li><li>SEO — sitemap, structured data</li></ul></div>
+    <div class="card"><div class="pbar pbar3"></div><span class="badge bg3">Phase 3 · Mobile Apps</span><h3>Android &amp; iOS</h3><div class="mrow"><span class="meta">⏱ <strong>+24 Weeks</strong></span><span class="meta">💰 <strong>₹7–10L</strong></span><span class="meta">📱 <strong>Cross-platform</strong></span></div><ul class="fl"><li>React Native — single codebase</li><li>Full feature parity with web</li><li>Firebase push notifications</li><li>GPS-based search + biometric login</li><li>Camera + photo upload</li><li>Apple Pay + Google Pay + UPI</li><li>Play Store + App Store submission</li><li>Offline listing cache + deep links</li></ul></div>
+  </div>
+
+  <div class="al ok" style="margin-top:28px"><span class="ai">🌍</span><div><strong>Market Opportunity:</strong> India's vacation rental segment is booming. Domestic travel demand, homestay culture, and UPI-native payments make this an ideal time for a localised Airbnb-style platform — especially in destinations like Kerala backwaters, Coorg, Himachal, and Lakshadweep.</div></div>
+</div>
+
+<!-- PHASES -->
+<div id="tab-phases" class="panel">
+  <div class="sec-head"><h2>Phase-by-Phase Plan</h2><p>What gets built in each phase, and why the sequence matters</p></div>
+  <div class="al warn"><span class="ai">⚠️</span><div><strong>Key Strategy:</strong> Phase 1 is a <em>live, revenue-generating product</em> — not a prototype. Real hosts, real bookings from Week 14. Phase 2 and 3 are funded by P1 traction.</div></div>
+
+  <p class="hsm">🟢 Phase 1 — MVP Web (Weeks 1–14)</p>
+  <div class="cgrid" style="margin-bottom:36px">
+    <div class="card"><div class="pbar pbar1"></div><span class="badge bg1">Guest Side</span><h3>Guest Experience</h3><ul class="fl"><li>Homepage with featured listings</li><li>Location + date + guest search</li><li>Results page with filters</li><li>Listing detail (photos, map, reviews)</li><li>Date picker + live availability</li><li>Booking request / instant book</li><li>Razorpay checkout</li><li>Confirmation emails</li><li>Guest dashboard — upcoming + past</li></ul></div>
+    <div class="card"><div class="pbar pbar1"></div><span class="badge bg1">Host Side</span><h3>Host Experience</h3><ul class="fl"><li>Become-a-host onboarding wizard</li><li>Listing builder (step-by-step)</li><li>Photo upload + reorder (20 max)</li><li>Amenity checklist (50+ options)</li><li>Nightly / weekly / monthly pricing</li><li>Availability calendar</li><li>Booking accept / decline</li><li>Bank payout setup</li><li>Host dashboard + inbox</li></ul></div>
+    <div class="card"><div class="pbar pbar1"></div><span class="badge bg1">Admin + Platform</span><h3>Admin Control</h3><ul class="fl"><li>User management (guest + host)</li><li>Listing approval / rejection</li><li>Booking oversight + overrides</li><li>Commission configuration</li><li>Basic revenue view</li><li>Email template management</li><li>CMS pages (About, FAQ, T&amp;C)</li><li>Manual payout trigger</li></ul></div>
+  </div>
+
+  <hr class="dv">
+  <p class="hsm">🔵 Phase 2 — Full Web (Weeks 15–34)</p>
+  <div class="cgrid" style="margin-bottom:36px">
+    <div class="card"><div class="pbar pbar2"></div><span class="badge bg2">Discovery</span><h3>Advanced Search</h3><ul class="fl"><li>Google Maps full search view + clusters</li><li>Category tabs (villa, cabin, beachfront…)</li><li>Smart filters (superhost, pet-friendly, pool)</li><li>Wishlists + saved collections</li><li>Saved search alerts</li><li>Recently viewed listings</li></ul></div>
+    <div class="card"><div class="pbar pbar2"></div><span class="badge bg2">Monetisation</span><h3>Revenue Features</h3><ul class="fl"><li>Dynamic pricing (seasonal, events)</li><li>Long-stay discounts</li><li>Coupon &amp; promo code engine</li><li>Referral program (host + guest)</li><li>Featured listing (paid boost)</li><li>Pro Host subscription plan</li><li>Multi-currency + Stripe</li></ul></div>
+    <div class="card"><div class="pbar pbar2"></div><span class="badge bg2">Trust &amp; Safety</span><h3>Verification</h3><ul class="fl"><li>KYC / Aadhaar / PAN (Digilocker)</li><li>Superhost badge algorithm</li><li>Guest verified + Property badges</li><li>Report user / listing flow</li><li>Cancellation policy engine</li><li>GDPR / IT Act compliance</li></ul></div>
+    <div class="card"><div class="pbar pbar2"></div><span class="badge bg2">Experiences</span><h3>Second Vertical</h3><ul class="fl"><li>Experiences listing (per-person pricing)</li><li>Experience host onboarding</li><li>Activity categories (cooking, adventure, wellness)</li><li>Combined stay + experience booking</li><li>Experiences discovery page</li></ul></div>
+  </div>
+
+  <hr class="dv">
+  <p class="hsm">🟣 Phase 3 — Mobile Apps (Weeks 35–58)</p>
+  <div class="cgrid">
+    <div class="card"><div class="pbar pbar3"></div><span class="badge bg3">Android</span><h3>Android App</h3><ul class="fl"><li>Full search, listing &amp; booking</li><li>Google Maps + GPS</li><li>Firebase push notifications</li><li>Google Pay / UPI</li><li>Fingerprint / Face unlock</li><li>Camera upload</li><li>Play Store submission</li></ul></div>
+    <div class="card"><div class="pbar pbar3"></div><span class="badge bg3">iOS</span><h3>iOS App</h3><ul class="fl"><li>Full search, listing &amp; booking</li><li>Apple Maps + GPS</li><li>APNs push notifications</li><li>Apple Pay</li><li>Face ID / Touch ID</li><li>Sign in with Apple (required)</li><li>App Store submission</li></ul></div>
+    <div class="card"><div class="pbar pbar3"></div><span class="badge bg3">Both Platforms</span><h3>Shared Mobile Core</h3><ul class="fl"><li>React Native — one codebase</li><li>Offline listing cache</li><li>Real-time chat</li><li>Host calendar management in-app</li><li>In-app review submission</li><li>Dark mode support</li></ul></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div id="tab-features" class="panel">
+  <div class="sec-head"><h2>Complete Feature Breakdown</h2><p>52+ features across all modules — tagged P1 / P2 / P3 / Optional</p></div>
+  <div class="fgrid">
+    <div class="fb"><h4>🔐 Auth &amp; Users</h4><ul class="fl"><li><span class="ft t1">P1</span> Email/password + Google OAuth</li><li><span class="ft t1">P1</span> Facebook OAuth</li><li><span class="ft t1">P1</span> Profile edit (photo, bio, languages)</li><li><span class="ft t2">P2</span> OTP two-factor (SMS)</li><li><span class="ft t2">P2</span> KYC / Aadhaar verify</li><li><span class="ft t3">P3</span> Biometric login</li><li><span class="ft t3">P3</span> Sign in with Apple</li></ul></div>
+    <div class="fb"><h4>🏠 Listing Management</h4><ul class="fl"><li><span class="ft t1">P1</span> Multi-photo upload + ordering</li><li><span class="ft t1">P1</span> Amenity checklist (50+ items)</li><li><span class="ft t1">P1</span> Room type (entire / private / shared)</li><li><span class="ft t1">P1</span> Block dates / availability calendar</li><li><span class="ft t2">P2</span> Dynamic pricing rules</li><li><span class="ft t2">P2</span> iCal sync (Booking.com)</li><li><span class="ft t2">P2</span> Listing category tags</li><li><span class="ft to">OPT</span> 360° virtual tour embed</li></ul></div>
+    <div class="fb"><h4>🔍 Search &amp; Discovery</h4><ul class="fl"><li><span class="ft t1">P1</span> Location + date + guest search</li><li><span class="ft t1">P1</span> Price range + instant book filter</li><li><span class="ft t1">P1</span> Infinite scroll results</li><li><span class="ft t2">P2</span> Google Maps full search</li><li><span class="ft t2">P2</span> Category tab bar</li><li><span class="ft t2">P2</span> Wishlists + saved collections</li><li><span class="ft t3">P3</span> GPS near-me (mobile)</li><li><span class="ft to">OPT</span> AI recommendation engine</li></ul></div>
+    <div class="fb"><h4>📅 Booking &amp; Reservations</h4><ul class="fl"><li><span class="ft t1">P1</span> Booking request + instant book</li><li><span class="ft t1">P1</span> Date conflict prevention</li><li><span class="ft t1">P1</span> Booking confirmation emails</li><li><span class="ft t2">P2</span> Cancellation policy engine</li><li><span class="ft t2">P2</span> Modification requests</li><li><span class="ft t2">P2</span> Pre-approval feature</li><li><span class="ft to">OPT</span> Group / split-payment booking</li></ul></div>
+    <div class="fb"><h4>💳 Payments</h4><ul class="fl"><li><span class="ft t1">P1</span> Razorpay (UPI, cards, net banking)</li><li><span class="ft t1">P1</span> Platform commission deduction</li><li><span class="ft t1">P1</span> Automated host payout</li><li><span class="ft t2">P2</span> Stripe (international cards)</li><li><span class="ft t2">P2</span> Refund workflows</li><li><span class="ft t2">P2</span> Multi-currency display</li><li><span class="ft t3">P3</span> Apple Pay + Google Pay</li><li><span class="ft to">OPT</span> Wallet / credits system</li></ul></div>
+    <div class="fb"><h4>💬 Messaging &amp; Notifications</h4><ul class="fl"><li><span class="ft t1">P1</span> Basic inbox (guest ↔ host)</li><li><span class="ft t1">P1</span> Email notifications</li><li><span class="ft t2">P2</span> Real-time chat (WebSocket)</li><li><span class="ft t2">P2</span> SMS alerts (Twilio)</li><li><span class="ft t2">P2</span> WhatsApp booking alerts</li><li><span class="ft t3">P3</span> Push notifications (Firebase)</li></ul></div>
+    <div class="fb"><h4>⭐ Reviews &amp; Trust</h4><ul class="fl"><li><span class="ft t1">P1</span> Guest → Host review (post-stay)</li><li><span class="ft t1">P1</span> Host → Guest review</li><li><span class="ft t1">P1</span> Star ratings (5 categories)</li><li><span class="ft t2">P2</span> Superhost algorithm + badge</li><li><span class="ft t2">P2</span> Verified badges (guest + property)</li><li><span class="ft t2">P2</span> Review moderation in admin</li></ul></div>
+    <div class="fb"><h4>📊 Analytics &amp; Dashboards</h4><ul class="fl"><li><span class="ft t1">P1</span> Host booking overview</li><li><span class="ft t1">P1</span> Guest trip history</li><li><span class="ft t1">P1</span> Admin — users + bookings</li><li><span class="ft t2">P2</span> Host revenue analytics chart</li><li><span class="ft t2">P2</span> Occupancy rate tracker</li><li><span class="ft t2">P2</span> Platform revenue reports</li><li><span class="ft to">OPT</span> BI dashboard (Metabase)</li></ul></div>
+    <div class="fb"><h4>🎟️ Growth &amp; Promotions</h4><ul class="fl"><li><span class="ft t2">P2</span> Coupon / promo code engine</li><li><span class="ft t2">P2</span> Referral program</li><li><span class="ft t2">P2</span> Featured listing (paid boost)</li><li><span class="ft t2">P2</span> Flash / seasonal deals</li><li><span class="ft t3">P3</span> App-only push promos</li><li><span class="ft to">OPT</span> Loyalty points system</li></ul></div>
+    <div class="fb"><h4>🌐 SEO &amp; Marketing</h4><ul class="fl"><li><span class="ft t1">P1</span> Dynamic meta tags per listing</li><li><span class="ft t2">P2</span> Auto XML sitemap</li><li><span class="ft t2">P2</span> JSON-LD structured data</li><li><span class="ft t2">P2</span> Open Graph (social share)</li><li><span class="ft t2">P2</span> Blog / editorial CMS</li><li><span class="ft to">OPT</span> Multi-language (i18n)</li></ul></div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div id="tab-timeline" class="panel">
+  <div class="sec-head"><h2>Project Timeline</h2><p>58-week roadmap — discovery to full platform live</p></div>
+  <div class="al info"><span class="ai">📌</span><div>Assumes: 1 Tech Lead + 2 Full-Stack Devs + 1 UI/UX Designer + 1 QA. Indian team. Adjust based on resource availability.</div></div>
+  <div class="tl">
+    <div class="tlb"><div class="tlp">Pre-Project · Week 0</div><div class="tlt">Kickoff &amp; Discovery</div><span class="tld">1 Week</span><p class="tls">Requirements sign-off, wireframe review, tech confirmation, repo + staging setup, NDA &amp; contract.</p></div>
+    <div class="tlb"><div class="tlp">P1 · Weeks 1–3</div><div class="tlt">UI/UX Design System</div><span class="tld">3 Weeks</span><p class="tls">Full Figma prototype — homepage, search, listing detail, booking flow, host wizard, both dashboards. Client sign-off before dev.</p></div>
+    <div class="tlb"><div class="tlp">P1 · Weeks 4–6</div><div class="tlt">Backend Foundation</div><span class="tld">3 Weeks</span><p class="tls">Node.js + Express API, PostgreSQL schema, JWT auth, OAuth, listing CRUD, booking engine, Razorpay, Cloudinary, SendGrid.</p></div>
+    <div class="tlb"><div class="tlp">P1 · Weeks 7–10</div><div class="tlt">Frontend Build (Next.js)</div><span class="tld">4 Weeks</span><p class="tls">Homepage, search results, listing page, checkout, host wizard, dashboards, messaging, full mobile responsiveness.</p></div>
+    <div class="tlb"><div class="tlp">P1 · Weeks 11–12</div><div class="tlt">Admin Panel + QA</div><span class="tld">2 Weeks</span><p class="tls">Admin panel, user + listing management, commission config, basic reports. Cross-browser + mobile QA pass.</p></div>
+    <div class="tlb"><div class="tlp">P1 · Weeks 13–14</div><div class="tlt">🚀 P1 LAUNCH</div><span class="tld">2 Weeks</span><p class="tls">Bug fixes, performance optimisation, production deploy (AWS), domain, SSL, CDN, GA4 + Hotjar. Soft launch.</p></div>
+    <div class="tlb g"><div class="tlp">P2 · Weeks 15–17</div><div class="tlt">Maps, Trust &amp; Dynamic Pricing</div><span class="tld">3 Weeks</span><p class="tls">Google Maps integration, dynamic pricing rules, cancellation engine, KYC / Aadhaar flow, superhost algorithm.</p></div>
+    <div class="tlb g"><div class="tlp">P2 · Weeks 18–21</div><div class="tlt">Real-Time Chat, Wishlists &amp; Advanced Search</div><span class="tld">4 Weeks</span><p class="tls">Socket.io messaging, wishlist collections, advanced filters, iCal sync, multi-currency, SMS alerts (Twilio).</p></div>
+    <div class="tlb g"><div class="tlp">P2 · Weeks 22–27</div><div class="tlt">Promos, Experiences &amp; Host Analytics</div><span class="tld">6 Weeks</span><p class="tls">Coupon engine, referral, featured listing, Experiences vertical, host revenue analytics, WhatsApp, SEO (sitemap + JSON-LD).</p></div>
+    <div class="tlb g"><div class="tlp">P2 · Weeks 28–34</div><div class="tlt">🚀 P2 FULL WEB LAUNCH</div><span class="tld">7 Weeks (QA + Hardening)</span><p class="tls">Full QA, Lighthouse 90+ audit, security review, Stripe live, advanced admin, public marketing launch.</p></div>
+    <div class="tlb p"><div class="tlp">P3 · Weeks 35–38</div><div class="tlt">Mobile Architecture &amp; Design</div><span class="tld">4 Weeks</span><p class="tls">React Native project setup, navigation, Figma-to-native mapping, API adapters, FCM + APNs push config.</p></div>
+    <div class="tlb p"><div class="tlp">P3 · Weeks 39–47</div><div class="tlt">Mobile Core Build</div><span class="tld">9 Weeks</span><p class="tls">All guest + host screens, booking flows, payments (Razorpay SDK + UPI + Google Pay + Apple Pay), maps, camera, biometric.</p></div>
+    <div class="tlb p"><div class="tlp">P3 · Weeks 48–52</div><div class="tlt">Device QA + Store Submission</div><span class="tld">5 Weeks</span><p class="tls">Testing on iOS 16/17 + Android 11–14, App Store + Play Store assets, TestFlight + Play Beta, compliance review.</p></div>
+    <div class="tlb p"><div class="tlp">P3 · Weeks 53–58</div><div class="tlt">🚀 FULL PLATFORM LIVE</div><span class="tld">Post-Launch: 6 Weeks</span><p class="tls">App store approval, production release, Sentry monitoring, push campaign, deep link marketing, monthly maintenance setup.</p></div>
+  </div>
+</div>
+
+<!-- BUDGET -->
+<div id="tab-budget" class="panel">
+  <div class="sec-head"><h2>Budget Breakdown</h2><p>Deliverable-by-deliverable costing — you know exactly what each piece costs</p></div>
+
+  <div class="al brand"><span class="ai">📌</span><div><strong>Basis:</strong> Custom development, Indian senior dev team (₹800–₹2,000/hr). Includes design, dev, QA, and 3-month post-launch support. Infrastructure costs are separate (itemised below). Payment gateway transaction fees (Razorpay 2%, Stripe 2.9%) are variable and not included.</div></div>
+
+  <div class="al warn"><span class="ai">🔍</span><div><strong>Is ₹18–24L the right number?</strong> Our Psyzen teaser was ₹85K. Beats n Bells event platform ₹70–82K. Both are single-purpose apps. This marketplace has a guest app, host app, admin system, real-time chat, payments, calendar, reviews, <em>and</em> two mobile apps. Market rate globally is $40K–$200K. Locally ₹18–24L is conservative. We haven't inflated this — if anything, certain modules are priced tight.</div></div>
+
+  <div class="bhero">
+    <div>
+      <div class="bh-lbl">Total Development Budget</div>
+      <div class="bh-amt">₹18–24 Lakh</div>
+      <div class="bh-sub">Web App (P1+P2) + Android + iOS · 58 weeks · Custom-built · Indian team</div>
+    </div>
+    <div><div class="bh-pill">+ ₹2.2L / year infrastructure</div></div>
+  </div>
+
+  <p class="hsm" style="margin-bottom:16px">Every deliverable, individually priced</p>
+  <div class="cgrid-cost">
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🎨 UI/UX Design — Web + Mobile</div><div class="ci-desc">Figma prototype, design tokens, all screens. Required before any dev begins.</div></div><div class="ci-amt">₹1.2L</div></div><span class="ci-when">P1 Weeks 1–3 + P3 Week 35</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">⚙️ Backend API Foundation</div><div class="ci-desc">Node.js, Express, PostgreSQL schema, auth, listing CRUD, booking engine, Razorpay, Cloudinary, email.</div></div><div class="ci-amt">₹2.5L</div></div><span class="ci-when">P1 Weeks 4–6</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🌐 Next.js Frontend (Web)</div><div class="ci-desc">Homepage, search, listing detail, booking checkout, host wizard, guest + host dashboards, messaging.</div></div><div class="ci-amt">₹3L</div></div><span class="ci-when">P1 Weeks 7–10</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🛡️ Admin Panel — Core</div><div class="ci-desc">User management, listing approval, booking control, commission config, basic revenue view.</div></div><div class="ci-amt">₹75K</div></div><span class="ci-when">P1 Weeks 11–12</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🔒 QA + P1 Production Deploy</div><div class="ci-desc">Cross-browser testing, mobile QA, AWS setup, SSL, CDN, GA4 + Hotjar analytics.</div></div><div class="ci-amt">₹62K</div></div><span class="ci-when">P1 Weeks 13–14</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🗺️ Google Maps Integration</div><div class="ci-desc">Map-view search, listing clusters, neighbourhood overview.</div></div><div class="ci-amt">₹60K</div></div><span class="ci-when">P2 Week 15</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">💬 Real-Time Chat (WebSocket)</div><div class="ci-desc">Socket.io messaging, message history, read receipts.</div></div><div class="ci-amt">₹75K</div></div><span class="ci-when">P2 Week 18</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">💰 Dynamic Pricing + Cancellation</div><div class="ci-desc">Seasonal pricing rules, long-stay discounts, flex / moderate / strict cancellation policies.</div></div><div class="ci-amt">₹65K</div></div><span class="ci-when">P2 Week 16</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🆔 KYC / Aadhaar Verification</div><div class="ci-desc">Digilocker API — host and guest identity verification flows.</div></div><div class="ci-amt">₹45K</div></div><span class="ci-when">P2 Week 17</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🎭 Experiences Vertical</div><div class="ci-desc">Second booking vertical — activities, per-person pricing, experience host onboarding.</div></div><div class="ci-amt">₹1.2L</div></div><span class="ci-when">P2 Weeks 22–25</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🎟️ Coupon, Referral + Promo Engine</div><div class="ci-desc">Promo codes, referral tracking, featured listing boost, seasonal deals.</div></div><div class="ci-amt">₹50K</div></div><span class="ci-when">P2 Week 22</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">💳 Stripe + Multi-Currency</div><div class="ci-desc">International card payments, multi-currency display with auto-conversion.</div></div><div class="ci-amt">₹38K</div></div><span class="ci-when">P2 Week 19</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">📲 SMS + WhatsApp + Notifications</div><div class="ci-desc">Twilio SMS/OTP, WhatsApp Business booking alerts, notification preferences.</div></div><div class="ci-amt">₹30K</div></div><span class="ci-when">P2 Week 20</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">📊 Advanced Admin + Host Analytics</div><div class="ci-desc">Revenue charts, occupancy tracking, platform reports, review moderation, support ticketing.</div></div><div class="ci-amt">₹72K</div></div><span class="ci-when">P2 Weeks 26–27</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🌍 SEO + Sitemap + Structured Data</div><div class="ci-desc">XML sitemap, JSON-LD, Open Graph, meta tag system for every listing page.</div></div><div class="ci-amt">₹30K</div></div><span class="ci-when">P2 Week 28</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">📲 React Native Core Build</div><div class="ci-desc">All screens + navigation, booking, dashboards, messaging, maps, camera, biometric login.</div></div><div class="ci-amt">₹3.75L</div></div><span class="ci-when">P3 Weeks 39–47</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🔔 Push Notifications (FCM + APNs)</div><div class="ci-desc">Firebase Cloud Messaging (Android) + Apple Push Notification Service (iOS).</div></div><div class="ci-amt">₹37K</div></div><span class="ci-when">P3 Week 39</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">💳 Mobile Payments (Razorpay + Apple/Google Pay)</div><div class="ci-desc">Razorpay mobile SDK, Apple Pay (iOS), Google Pay + UPI (Android).</div></div><div class="ci-amt">₹45K</div></div><span class="ci-when">P3 Week 40</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🧪 Device QA + Store Submissions</div><div class="ci-desc">20+ device testing, App Store + Play Store asset prep, TestFlight + Play Beta, submission.</div></div><div class="ci-amt">₹80K</div></div><span class="ci-when">P3 Weeks 48–52</span></div>
+    <div class="ci"><div class="ci-top"><div><div class="ci-name">🛡️ Post-Launch Support (3 months)</div><div class="ci-desc">Bug fixes, performance monitoring (Sentry), minor iterations.</div></div><div class="ci-amt">₹72K</div></div><span class="ci-when">Post-launch</span></div>
+  </div>
+
+  <p class="hsm">Summary table</p>
+  <div class="tw" style="margin-bottom:32px">
+    <table>
+      <thead><tr><th>Deliverable Group</th><th>Low</th><th>High</th></tr></thead>
+      <tbody>
+        <tr><td>UI/UX Design (web + mobile)</td><td class="ta">₹1,20,000</td><td class="ta">₹1,80,000</td></tr>
+        <tr><td>Backend API + Database</td><td class="ta">₹2,25,000</td><td class="ta">₹3,00,000</td></tr>
+        <tr><td>Next.js Frontend</td><td class="ta">₹2,50,000</td><td class="ta">₹3,50,000</td></tr>
+        <tr><td>Admin Panel (core + advanced)</td><td class="ta">₹1,20,000</td><td class="ta">₹1,60,000</td></tr>
+        <tr><td>Payment Integrations (Razorpay + Stripe)</td><td class="ta">₹55,000</td><td class="ta">₹75,000</td></tr>
+        <tr><td>Maps, Chat, Dynamic Pricing, KYC</td><td class="ta">₹2,00,000</td><td class="ta">₹2,50,000</td></tr>
+        <tr><td>Experiences + Promos + Analytics</td><td class="ta">₹1,70,000</td><td class="ta">₹2,30,000</td></tr>
+        <tr><td>Notifications (SMS, WhatsApp, Push)</td><td class="ta">₹65,000</td><td class="ta">₹90,000</td></tr>
+        <tr><td>React Native Mobile Apps (Android + iOS)</td><td class="ta">₹4,50,000</td><td class="ta">₹6,00,000</td></tr>
+        <tr><td>QA, Testing &amp; All Deployments</td><td class="ta">₹1,20,000</td><td class="ta">₹1,60,000</td></tr>
+        <tr><td>Post-Launch Support (3 months)</td><td class="ta">₹60,000</td><td class="ta">₹80,000</td></tr>
+      </tbody>
+      <tfoot><tr><td><strong>Total Development</strong></td><td class="tt">₹18,35,000</td><td class="tt">₹23,75,000</td></tr></tfoot>
+    </table>
+  </div>
+
+  <p class="hsm">Annual Infrastructure Costs</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Service</th><th>Provider</th><th>Monthly</th><th>Annual</th></tr></thead>
+      <tbody>
+        <tr><td>Cloud Server (AWS EC2 t3.medium)</td><td>AWS</td><td>₹6,000</td><td class="ta">₹72,000</td></tr>
+        <tr><td>Managed DB (AWS RDS PostgreSQL)</td><td>AWS RDS</td><td>₹4,000</td><td class="ta">₹48,000</td></tr>
+        <tr><td>Image CDN (Cloudinary)</td><td>Cloudinary</td><td>₹2,500</td><td class="ta">₹30,000</td></tr>
+        <tr><td>Email (SendGrid)</td><td>SendGrid</td><td>₹1,500</td><td class="ta">₹18,000</td></tr>
+        <tr><td>SMS / WhatsApp (Twilio)</td><td>Twilio</td><td>₹2,000</td><td class="ta">₹24,000</td></tr>
+        <tr><td>Google Maps API</td><td>Google</td><td>₹1,500</td><td class="ta">₹18,000</td></tr>
+        <tr><td>Domain + SSL</td><td>—</td><td>₹200</td><td class="ta">₹2,500</td></tr>
+        <tr><td>Apple Developer Account</td><td>Apple</td><td>—</td><td class="ta">₹8,000</td></tr>
+        <tr><td>Google Play (one-time)</td><td>Google</td><td>—</td><td class="ta">₹1,750</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3"><strong>Estimated Annual Infrastructure</strong></td><td class="tt">~₹2.2 Lakh / year</td></tr></tfoot>
+    </table>
+  </div>
+  <p class="infran">* Razorpay: 2% per transaction (variable). Stripe: 2.9% + ₹30 per transaction (variable). Not included above.</p>
+</div>
+
+<!-- TECH -->
+<div id="tab-tech" class="panel">
+  <div class="sec-head"><h2>Tech Stack</h2><p>Modern, proven, scalable — maintainable by any competent team</p></div>
+  <div class="r2" style="margin-bottom:28px">
+    <div><p class="hsm">🌐 Frontend (Web)</p><div class="tgrid"><div class="tc"><div class="ti">⚛️</div><div class="tn">Next.js 14</div><div class="tu">SSR + SSG, React 18</div></div><div class="tc"><div class="ti">🎨</div><div class="tn">Tailwind CSS</div><div class="tu">Utility-first styling</div></div><div class="tc"><div class="ti">📦</div><div class="tn">Zustand</div><div class="tu">Client state</div></div><div class="tc"><div class="ti">🔁</div><div class="tn">React Query</div><div class="tu">Server state + cache</div></div><div class="tc"><div class="ti">📝</div><div class="tn">React Hook Form</div><div class="tu">Forms + validation</div></div><div class="tc"><div class="ti">🗺️</div><div class="tn">Google Maps JS</div><div class="tu">Map search</div></div></div></div>
+    <div><p class="hsm">📱 Mobile</p><div class="tgrid"><div class="tc"><div class="ti">📲</div><div class="tn">React Native</div><div class="tu">iOS + Android</div></div><div class="tc"><div class="ti">🧭</div><div class="tn">React Navigation</div><div class="tu">Native nav</div></div><div class="tc"><div class="ti">🔔</div><div class="tn">Firebase FCM</div><div class="tu">Push notifications</div></div><div class="tc"><div class="ti">🗺️</div><div class="tn">RN Maps</div><div class="tu">Google + Apple</div></div><div class="tc"><div class="ti">💳</div><div class="tn">Razorpay SDK</div><div class="tu">Mobile payments</div></div><div class="tc"><div class="ti">📸</div><div class="tn">Expo Camera</div><div class="tu">Camera + gallery</div></div></div></div>
+  </div>
+  <div class="r2">
+    <div><p class="hsm">⚙️ Backend</p><div class="tgrid"><div class="tc"><div class="ti">🟢</div><div class="tn">Node.js</div><div class="tu">Runtime</div></div><div class="tc"><div class="ti">🚂</div><div class="tn">Express.js</div><div class="tu">REST API</div></div><div class="tc"><div class="ti">🔌</div><div class="tn">Socket.io</div><div class="tu">Real-time chat</div></div><div class="tc"><div class="ti">🐘</div><div class="tn">PostgreSQL</div><div class="tu">Primary DB</div></div><div class="tc"><div class="ti">⚡</div><div class="tn">Redis</div><div class="tu">Cache + sessions</div></div><div class="tc"><div class="ti">🔑</div><div class="tn">JWT + Bcrypt</div><div class="tu">Auth + security</div></div></div></div>
+    <div><p class="hsm">☁️ Infrastructure</p><div class="tgrid"><div class="tc"><div class="ti">☁️</div><div class="tn">AWS EC2 + RDS</div><div class="tu">Server + DB</div></div><div class="tc"><div class="ti">🖼️</div><div class="tn">Cloudinary</div><div class="tu">Image CDN</div></div><div class="tc"><div class="ti">🔧</div><div class="tn">Docker</div><div class="tu">Containers</div></div><div class="tc"><div class="ti">🔄</div><div class="tn">GitHub Actions</div><div class="tu">CI/CD</div></div><div class="tc"><div class="ti">📊</div><div class="tn">Sentry</div><div class="tu">Error monitoring</div></div><div class="tc"><div class="ti">📈</div><div class="tn">GA4 + Hotjar</div><div class="tu">Analytics</div></div></div></div>
+  </div>
+</div>
+
+<!-- INTEGRATIONS -->
+<div id="tab-integrations" class="panel">
+  <div class="sec-head"><h2>Integrations &amp; Third-Party Services</h2><p>Must-have and nice-to-have APIs and platform connections</p></div>
+  <p class="hsm" style="margin-bottom:14px">🔴 Must-Have (P1 &amp; P2)</p>
+  <div class="igrid" style="margin-bottom:32px">
+    <div class="ic"><div class="il">💳</div><div class="in">Razorpay</div><div class="it">India Payments (P1)</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">💳</div><div class="in">Stripe</div><div class="it">International (P2)</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">🗺️</div><div class="in">Google Maps</div><div class="it">Search + Maps</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">📧</div><div class="in">SendGrid</div><div class="it">Transactional Email</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">📸</div><div class="in">Cloudinary</div><div class="it">Image CDN</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">🔓</div><div class="in">Google OAuth</div><div class="it">Social Login</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">🔔</div><div class="in">Firebase FCM</div><div class="it">Push (P3)</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">📱</div><div class="in">Twilio</div><div class="it">SMS + OTP</div><span class="ib ibm">MUST</span></div>
+    <div class="ic"><div class="il">🆔</div><div class="in">Digilocker</div><div class="it">KYC / Aadhaar</div><span class="ib ibm">MUST</span></div>
+  </div>
+  <p class="hsm" style="margin-bottom:14px">🔵 Nice-to-Have (P2 &amp; P3)</p>
+  <div class="igrid">
+    <div class="ic"><div class="il">💬</div><div class="in">WhatsApp Business</div><div class="it">Booking Alerts</div><span class="ib ibn">P2</span></div>
+    <div class="ic"><div class="il">📅</div><div class="in">iCal Sync</div><div class="it">Booking.com, VRBO</div><span class="ib ibn">P2</span></div>
+    <div class="ic"><div class="il">🍎</div><div class="in">Apple Pay</div><div class="it">iOS Payments</div><span class="ib ibn">P3</span></div>
+    <div class="ic"><div class="il">🤖</div><div class="in">Google Pay</div><div class="it">Android</div><span class="ib ibn">P3</span></div>
+    <div class="ic"><div class="il">🍎</div><div class="in">Sign in Apple</div><div class="it">iOS Auth Required</div><span class="ib ibn">P3</span></div>
+    <div class="ic"><div class="il">📊</div><div class="in">GA4 + Hotjar</div><div class="it">Analytics</div><span class="ib ibn">P1</span></div>
+    <div class="ic"><div class="il">🐛</div><div class="in">Sentry</div><div class="it">Error Monitoring</div><span class="ib ibn">P1</span></div>
+    <div class="ic"><div class="il">💼</div><div class="in">Freshdesk</div><div class="it">Customer Support</div><span class="ib ibn">P2</span></div>
+    <div class="ic"><div class="il">🤖</div><div class="in">OpenAI API</div><div class="it">Smart Pricing / Bot</div><span class="ib ibn">OPT</span></div>
+  </div>
+</div>
+
+<!-- COMPARE -->
+<div id="tab-compare" class="panel">
+  <div class="sec-head"><h2>Full Platform vs. Simplified Starter</h2><p>Two build paths — pick based on budget and urgency to market</p></div>
+  <div class="cmpc" style="margin-bottom:28px">
+    <div class="cc full">
+      <span class="badge bgt">🏆 Full Platform</span>
+      <h3>Complete Airbnb Clone</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:6px">All 3 phases. Web + Mobile. Airbnb-parity.</p>
+      <div class="cp">₹18–24L</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:20px">58 weeks · Web + Android + iOS</p>
+      <ul class="fl">
+        <li>Full listing creation + management</li><li>Google Maps search + map view</li><li>Real-time chat (WebSocket)</li><li>Dynamic pricing engine</li><li>KYC / Aadhaar verification</li><li>Experiences vertical</li><li>Multi-currency + Stripe</li><li>Coupon + referral engine</li><li>Native Android app</li><li>Native iOS app</li><li>Firebase push notifications</li><li>Host revenue analytics</li><li>iCal sync (Booking.com)</li><li>Advanced admin + reports</li><li>WhatsApp booking alerts</li><li>Full SEO — structured data</li>
+      </ul>
+    </div>
+    <div class="cc lite">
+      <span class="badge bgw">💡 Simplified Starter</span>
+      <h3>Lean MVP — Web Only</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:6px">Fast to market. Validate before the full investment.</p>
+      <div class="cp">₹5–7L</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:20px">10–12 weeks · Web · INR only</p>
+      <ul class="fl">
+        <li>User sign up / login</li><li>Basic listing creation</li><li>Search (location, dates, guests)</li><li>Booking flow + calendar</li><li>Razorpay payments (INR)</li><li>Host + guest dashboard</li><li>Reviews + ratings</li><li>Email notifications</li><li>Admin panel (basic)</li><li>Mobile-responsive web</li>
+        <li style="opacity:.45">✗ No Google Maps (static only)</li><li style="opacity:.45">✗ No real-time chat</li><li style="opacity:.45">✗ No dynamic pricing</li><li style="opacity:.45">✗ No mobile apps</li><li style="opacity:.45">✗ No KYC verification</li><li style="opacity:.45">✗ No experiences vertical</li>
+      </ul>
+    </div>
+  </div>
+  <div class="al ok"><span class="ai">🎯</span><div><strong>Recommendation:</strong> Start with the <strong>Simplified Starter (₹5–7L)</strong>. Onboard 50–100 hosts, take real bookings, prove the model. Use that revenue and traction to fund Phase 2 and 3. This is how Airbnb, StayVista, and Zostel all scaled — lean first, then rich. You're also in a much stronger position with investors or co-founders if you have live booking data.</div></div>
+  <hr class="dv">
+  <p class="hsm">Competitor Landscape</p>
+  <div class="tw">
+    <table><thead><tr><th>Platform</th><th>Model</th><th>India Focus</th><th>Key Lesson</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Airbnb</strong></td><td>P2P rental + Experiences</td><td>Growing</td><td>Benchmark for UX, trust systems, two-sided design</td></tr>
+      <tr><td><strong>OYO Vacation Homes</strong></td><td>Managed + franchise</td><td>Very strong</td><td>India-specific property types + Tier-2/3 cities</td></tr>
+      <tr><td><strong>StayVista</strong></td><td>Curated luxury villas</td><td>India-first</td><td>Curation + quality control = premium pricing</td></tr>
+      <tr><td><strong>Zostel</strong></td><td>Hostels + community stays</td><td>India-first</td><td>Community-driven, budget traveller segment</td></tr>
+      <tr><td><strong>MakeMyTrip</strong></td><td>OTA + packages + homes</td><td>Dominant</td><td>SEO content strategy + regional language support</td></tr>
+      <tr><td><strong>VRBO / Booking.com</strong></td><td>OTA + homes</td><td>Limited</td><td>iCal sync from Day 1 — list on them too</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- REVENUE -->
+<div id="tab-revenue" class="panel">
+  <div class="sec-head"><h2>Revenue Model</h2><p>Multiple monetisation streams — active from Day 1</p></div>
+  <div class="rgrid" style="margin-bottom:32px">
+    <div class="rc" data-ico="💳"><div class="rl">Primary · Live from P1</div><div class="rn">Guest Service Fee</div><div class="rd">8–14% on top of listing price. Core Airbnb model. At ₹5K avg booking × 100 bookings/month = ₹70K+ platform revenue.</div></div>
+    <div class="rc" data-ico="🏠"><div class="rl">Primary · Live from P1</div><div class="rn">Host Commission</div><div class="rd">3–5% deducted from host payout. Combined with guest fee = 11–18% total margin per transaction.</div></div>
+    <div class="rc" data-ico="📋"><div class="rl">Recurring · P2</div><div class="rn">Pro Host Subscription</div><div class="rd">₹499–₹2,999/month — priority listing, advanced analytics, multi-property tools. Predictable SaaS revenue.</div></div>
+    <div class="rc" data-ico="⬆️"><div class="rl">High Margin · P2</div><div class="rn">Featured Listings</div><div class="rd">Hosts pay ₹999–₹4,999 for 7/15/30 day priority placement. Zero incremental cost to platform.</div></div>
+    <div class="rc" data-ico="🎭"><div class="rl">Second Vertical · P2</div><div class="rn">Experiences Commission</div><div class="rd">20% on experience bookings. Higher margin than stays — no property infrastructure.</div></div>
+    <div class="rc" data-ico="🏢"><div class="rl">B2B · P2+</div><div class="rn">Corporate Bookings</div><div class="rd">Corporate travel desk for company offsites, team retreats. Annual contract + fixed commission. Underserved in India.</div></div>
+  </div>
+  <p class="hsm">Illustrative Revenue Projection</p>
+  <div class="tw">
+    <table><thead><tr><th>Period</th><th>Hosts Listed</th><th>Monthly Bookings</th><th>Avg Value</th><th>Est. Platform Revenue</th></tr></thead>
+    <tbody>
+      <tr><td>Month 3 (P1 Live)</td><td>50</td><td>40</td><td>₹4,000</td><td class="ta">~₹35,000 / mo</td></tr>
+      <tr><td>Month 6</td><td>200</td><td>150</td><td>₹5,000</td><td class="ta">~₹1.1L / mo</td></tr>
+      <tr><td>Month 12 (P2 Live)</td><td>500</td><td>400</td><td>₹5,500</td><td class="ta">~₹3.3L / mo</td></tr>
+      <tr><td>Month 18 (P3 Live)</td><td>1,200</td><td>1,000</td><td>₹6,000</td><td class="ta">~₹8.4L / mo</td></tr>
+      <tr><td>Year 2</td><td>3,000+</td><td>3,000+</td><td>₹6,500</td><td class="ta">~₹25L / mo</td></tr>
+    </tbody></table>
+  </div>
+  <p class="infran" style="margin-top:8px">* Based on ~11% blended platform fee. Actual results depend on marketing and category focus.</p>
+</div>
+
+<div class="doc-footer">
+  <div class="brand">FlumenX × Misc Archive</div>
+  <div class="sub">Creative Systems · Digital Strategy · Trivandrum, Kerala &nbsp;|&nbsp; For discussion and proposal purposes only</div>
+</div>
+
+<script>
+function tab(n,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+n).classList.add('on');
+  el.classList.add('on');
+  const h=document.querySelector('nav').offsetHeight+document.querySelector('.hero').offsetHeight;
+  window.scrollTo({top:h-20,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
